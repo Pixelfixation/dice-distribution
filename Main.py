@@ -81,12 +81,14 @@ def combos(dice_list):
     count = Counter(result)
     return count.items()
 
+
 def update_blank_dice(): # works but has a list index out of range error
     for i in range(len(blank_dice)):
-        if dice[i] != None:
+        if dice[i] is not None:
             blank_dice[i].configure(image=int_to_dice_image(dice[i]))
-        if dice[i] == None:
+        if dice[i] is None:
             blank_dice[i].configure(image=blank_die_img)
+
 
 def int_to_dice_image(i):
     if i == 4:
