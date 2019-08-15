@@ -5,6 +5,11 @@ from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, NavigationTool
 from matplotlib.figure import Figure
 
 
+class Main:
+    def __init__(self):
+        pass
+
+
 roll_values = []
 roll_occurrences = []
 
