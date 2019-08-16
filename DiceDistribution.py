@@ -6,7 +6,7 @@
 from Plotter import Plotter
 from UI import Ui
 
-max_dice = 5
+max_dice = 4
 geometry_size = '750x600'
 
 
