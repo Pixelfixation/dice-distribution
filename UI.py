@@ -1,11 +1,9 @@
 from tkinter import *
-from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, NavigationToolbar2Tk)
-from matplotlib.figure import Figure
+import matplotlib.pyplot
 import Plotter
 
 
 class Ui:
-
     # create a window
     root = Tk()
     # images of dice
@@ -16,9 +14,11 @@ class Ui:
     d10_img = PhotoImage(file='d10.png')
     d12_img = PhotoImage(file='d12.png')
     d20_img = PhotoImage(file='d20.png')
+    bar_img = PhotoImage(file="blank_bar.png")
     c_dice_img = PhotoImage(file='clear_dice.png')
     distribution_img = PhotoImage(file='dice_cup.png')
 
+    bar_label = Label(root, width=640, height=480, image=bar_img)
     dice = []
     dice_slot_labels = []
 
@@ -45,12 +45,23 @@ class Ui:
         self.plotter.update_distribution_data(self.dice)
         self.embed_plot(self.plotter.get_roll_values(), self.plotter.get_roll_occurrences())
 
+    def generate_bar_plot(self, roll_values, roll_occurrences):
+        plt = matplotlib.pyplot
+        plt.style.use('dark_background')
+        plt.title("Out of {} possible rolls".format(self.plotter.get_iterations(self.dice)))
+        plt.ylabel("Occurrences of Unique Values")
+        plt.xlabel("Roll Values")
+        plt.bar(roll_values, roll_occurrences)
+        plt.savefig("tmp_bar.png")
+        plt.close("all")
+
+    def generate_pie_plot(self, roll_values, roll_occurrences):
+        pass
+
     def embed_plot(self, roll_values, roll_occurrences):
-        fig = Figure(figsize=(6.7, 4.9), dpi=100)
-        fig.add_subplot(111).bar(roll_values, roll_occurrences)
-        canvas = FigureCanvasTkAgg(fig, master=self.root)
-        canvas.draw()
-        canvas.get_tk_widget().grid(row=2, column=1, rowspan=7, columnspan=self.max_dice+2, sticky=W)
+        self.generate_bar_plot(roll_values, roll_occurrences)
+        self.bar_img = PhotoImage(file="tmp_bar.png")
+        self.bar_label.configure(image=self.bar_img)
 
     def update_dice_slots(self):  # works but has a list index out of range error
         for i in range(len(self.dice)):
@@ -123,6 +134,9 @@ class Ui:
         # place blank dice
         for i in range(self.max_dice):
             self.dice_slot_labels[i].grid(row=1, column=i+2, sticky=W)
+
+        self.bar_label.grid(row=2, column=1, rowspan=7, columnspan=self.max_dice+2, sticky=W)
+
 
         # run the window in indefinitely
         self.root.mainloop()

@@ -18,7 +18,7 @@ class Plotter:
         i = self.get_iterations(new_list)
         for item in self.generate_combos(new_list):
             self.roll_values.append(item[0])
-            self.roll_occurrences.append(self.get_probability(item[1], i))
+            self.roll_occurrences.append(item[1])
 
 
     # takes a list of ints and generates all possible outcomes of additive dice rolls and returns as a list.
